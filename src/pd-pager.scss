@@ -1,0 +1,71 @@
+$background-color: #fff;
+$border-color: #ddd;
+$disabled-text-color: #777;
+$invalid-border-color: #f00;
+$invalid-shadow-color: #ffa9a9;
+$shadow-color: #ccc;
+$text-color: #428bca;
+
+@mixin box-shadow($shadow-color) {
+    -moz-box-shadow:    3px 5px 6px $shadow-color;
+    -webkit-box-shadow: 3px 5px 6px $shadow-color;
+    box-shadow:         3px 5px 6px $shadow-color;
+}
+
+.pager-container {
+    display: inline-flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: center;
+    width: 100%;
+
+    & button,
+    input {
+        background-color: $background-color;
+        border: 1px solid $border-color;
+        border-radius: 5px;
+        font-size: .9rem;
+        padding: 7px;
+    }
+
+    > compose {
+        flex: 1 0;
+        margin: 2px;
+    }
+
+    & button {
+        color: $text-color;
+        min-width: 20px;
+        width: 100%;
+
+        &:hover {
+            @include box-shadow($shadow-color);
+            cursor: pointer;
+        }
+
+        &[disabled] {
+            box-shadow: 0 0;
+            color: $disabled-text-color;
+            cursor: default;
+        }
+    }
+
+    & input {
+        flex: 2 1;
+        margin: 2px;
+
+        &:focus,
+        &:hover {
+            @include box-shadow($shadow-color);
+        }
+
+        &.invalid {
+            border-color: $invalid-border-color;
+
+            &:focus,
+            &:hover {
+                @include box-shadow($invalid-shadow-color);
+            }
+        }
+    }
+}

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <title>PdPager Template</title>
+
+        <link rel="stylesheet" href="./dist/pd-pager.css">
+    </head>
+    <body>
+        <script src="./jspm_packages/system.js"></script>
+        <script src="./config.js"></script>
+        <script>
+            window.define = System.amdDefine;
+            window.require = window.requirejs = System.amdRequire;
+            // (function(){
+            //     // https://thiscouldbebetter.wordpress.com/2013/01/31/reading-a-string-from-a-file-in-javascript/
+
+            //     var request = new XMLHttpRequest();
+            //     request.onload = insertHTMLFragment.bind(this, document.body);
+            //     request.open('GET', './dist/pd-pager.html', true);
+            //     request.send();
+
+            //     function insertHTMLFragment(element, event)
+            //     {
+            //         element.insertAdjacentHTML('afterbegin', event.target.responseText);
+            //     }
+            // })();
+
+            System.import('./dist/pd-pager').then((mod) => {
+                var pdPager = new mod.PdPager({
+                    totalNumberOfRecords: 100
+                });
+                this.pageToEnd = mod.pageToEnd.bind(pdPager);
+            });
+        </script>
+    </body>
+</html>
