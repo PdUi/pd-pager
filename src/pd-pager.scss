@@ -12,7 +12,7 @@ $text-color: #428bca;
     box-shadow:         3px 5px 6px $shadow-color;
 }
 
-.pager-container {
+[id^='pager-container'] {
     display: inline-flex;
     flex-direction: row;
     flex-wrap: nowrap;

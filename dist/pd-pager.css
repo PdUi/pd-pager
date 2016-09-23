@@ -1,0 +1,44 @@
+[id^='pager-container'] {
+  display: inline-flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: center;
+  width: 100%; }
+  [id^='pager-container'] button,
+  [id^='pager-container'] input {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: .9rem;
+    padding: 7px; }
+  [id^='pager-container'] > compose {
+    flex: 1 0;
+    margin: 2px; }
+  [id^='pager-container'] button {
+    color: #428bca;
+    min-width: 20px;
+    width: 100%; }
+    [id^='pager-container'] button:hover {
+      -moz-box-shadow: 3px 5px 6px #ccc;
+      -webkit-box-shadow: 3px 5px 6px #ccc;
+      box-shadow: 3px 5px 6px #ccc;
+      cursor: pointer; }
+    [id^='pager-container'] button[disabled] {
+      box-shadow: 0 0;
+      color: #777;
+      cursor: default; }
+  [id^='pager-container'] input {
+    flex: 2 1;
+    margin: 2px; }
+    [id^='pager-container'] input:focus, [id^='pager-container'] input:hover {
+      -moz-box-shadow: 3px 5px 6px #ccc;
+      -webkit-box-shadow: 3px 5px 6px #ccc;
+      box-shadow: 3px 5px 6px #ccc; }
+    [id^='pager-container'] input.invalid {
+      border-color: #f00; }
+      [id^='pager-container'] input.invalid:focus, [id^='pager-container'] input.invalid:hover {
+        -moz-box-shadow: 3px 5px 6px #ffa9a9;
+        -webkit-box-shadow: 3px 5px 6px #ffa9a9;
+        box-shadow: 3px 5px 6px #ffa9a9; }
+
+/*# sourceMappingURL=maps/pd-pager.css.map */

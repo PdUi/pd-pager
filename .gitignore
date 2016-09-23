@@ -1,5 +1,5 @@
 jspm_packages/
 node_modules/
 typings/
-dist/**/*.*
 .vscode/
+**/dist/maps/

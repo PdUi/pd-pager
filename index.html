@@ -9,30 +9,67 @@
         <link rel="stylesheet" href="./dist/pd-pager.css">
     </head>
     <body>
+        <div id="pager1"></div>
+        <div id="pager2"></div>
         <script src="./jspm_packages/system.js"></script>
         <script src="./config.js"></script>
         <script>
             window.define = System.amdDefine;
             window.require = window.requirejs = System.amdRequire;
-            // (function(){
-            //     // https://thiscouldbebetter.wordpress.com/2013/01/31/reading-a-string-from-a-file-in-javascript/
 
-            //     var request = new XMLHttpRequest();
-            //     request.onload = insertHTMLFragment.bind(this, document.body);
-            //     request.open('GET', './dist/pd-pager.html', true);
-            //     request.send();
+            // System.import('./dist/pd-pager1').then((mod) => {
+            //     var pdPager = new mod.PdPager({
+            //         totalNumberOfRecords: 100
+            //     });
+            //     this.pageToEnd = mod.pageToEnd.bind(pdPager);
+            // });
 
-            //     function insertHTMLFragment(element, event)
-            //     {
-            //         element.insertAdjacentHTML('afterbegin', event.target.responseText);
-            //     }
-            // })();
+            // System.import('./dist/pd-pager2').then((mod) => {
+            //     var pdPager = new mod.PdPager({
+            //         enableFirstLastPageArrows: true,
+            //         enablePageArrows: true,
+            //         enablePageInput: true,
+            //         totalNumberOfRecords: 100
+            //     });
+
+            //     var pdPager2 = new mod.PdPager({
+            //         enableFirstLastPageArrows: true,
+            //         enablePageArrows: true,
+            //         enablePageInput: true,
+            //         totalNumberOfRecords: 100
+            //     });
+
+            //     Object.keys(mod)
+            //           .forEach((key,index) => {
+            //               if(typeof mod[key] === 'function') {
+            //                   this[key] = mod[key].bind(pdPager);
+            //               }
+            //           });
+
+            //     Object.keys(mod)
+            //           .forEach((key,index) => {
+            //               if(typeof mod[key] === 'function') {
+            //                   this[key] = mod[key].bind(pdPager2);
+            //               }
+            //           });
+            // });
 
             System.import('./dist/pd-pager').then((mod) => {
+                var element1 = document.getElementById('pager1');
                 var pdPager = new mod.PdPager({
+                    enableFirstLastPageArrows: true,
+                    enablePageArrows: true,
+                    enablePageInput: true,
                     totalNumberOfRecords: 100
-                });
-                this.pageToEnd = mod.pageToEnd.bind(pdPager);
+                }, element1);
+
+                var element2 = document.getElementById('pager2');
+                var pdPager2 = new mod.PdPager({
+                    enableFirstLastPageArrows: true,
+                    enablePageArrows: true,
+                    enablePageInput: true,
+                    totalNumberOfRecords: 100
+                }, element2);
             });
         </script>
     </body>
