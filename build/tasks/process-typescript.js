@@ -25,5 +25,5 @@ gulp.task('process-typescript', ['lint-typescript'], function() {
                       .pipe($.sourcemaps.init())
                       .pipe($.typescript(typescriptCompiler))
                       .pipe($.sourcemaps.write('./maps'))
-                      .pipe(gulp.dest(paths.output));
+                      .pipe(gulp.dest(paths.jsOutput));
 });

@@ -4,7 +4,7 @@
   "description": "A shared 'vanilla-js' UI pager component implementation.",
   "repository": {
     "type": "git",
-    "url": "TODO"
+    "url": "https://github.com/pdui/pd-pager"
   },
   "keywords": [],
   "author": {
@@ -14,7 +14,7 @@
   },
   "license": "MIT",
   "bugs": {
-    "url": "TODO"
+    "url": "https://github.com/pdui/pd-pager/issues"
   },
   "homepage": "TODO",
   "devDependencies": {

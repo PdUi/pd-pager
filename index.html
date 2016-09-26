@@ -10,49 +10,11 @@
     </head>
     <body>
         <div id="pager1"></div>
-        <div id="pager2"></div>
         <script src="./jspm_packages/system.js"></script>
         <script src="./config.js"></script>
         <script>
             window.define = System.amdDefine;
             window.require = window.requirejs = System.amdRequire;
-
-            // System.import('./dist/pd-pager1').then((mod) => {
-            //     var pdPager = new mod.PdPager({
-            //         totalNumberOfRecords: 100
-            //     });
-            //     this.pageToEnd = mod.pageToEnd.bind(pdPager);
-            // });
-
-            // System.import('./dist/pd-pager2').then((mod) => {
-            //     var pdPager = new mod.PdPager({
-            //         enableFirstLastPageArrows: true,
-            //         enablePageArrows: true,
-            //         enablePageInput: true,
-            //         totalNumberOfRecords: 100
-            //     });
-
-            //     var pdPager2 = new mod.PdPager({
-            //         enableFirstLastPageArrows: true,
-            //         enablePageArrows: true,
-            //         enablePageInput: true,
-            //         totalNumberOfRecords: 100
-            //     });
-
-            //     Object.keys(mod)
-            //           .forEach((key,index) => {
-            //               if(typeof mod[key] === 'function') {
-            //                   this[key] = mod[key].bind(pdPager);
-            //               }
-            //           });
-
-            //     Object.keys(mod)
-            //           .forEach((key,index) => {
-            //               if(typeof mod[key] === 'function') {
-            //                   this[key] = mod[key].bind(pdPager2);
-            //               }
-            //           });
-            // });
 
             System.import('./dist/pd-pager').then((mod) => {
                 var element1 = document.getElementById('pager1');
@@ -63,13 +25,12 @@
                     totalNumberOfRecords: 100
                 }, element1);
 
-                var element2 = document.getElementById('pager2');
                 var pdPager2 = new mod.PdPager({
                     enableFirstLastPageArrows: true,
                     enablePageArrows: true,
                     enablePageInput: true,
                     totalNumberOfRecords: 100
-                }, element2);
+                });
             });
         </script>
     </body>

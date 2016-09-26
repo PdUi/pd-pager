@@ -1,0 +1,1 @@
+{"version":3,"sources":["page.ts"],"names":[],"mappings":";;IAAA;QAAA;QAGA,CAAC;QAAD,WAAC;IAAD,CAHA,AAGC,IAAA;IAHY,YAAI,OAGhB,CAAA","file":"page.js","sourcesContent":["export class Page {\r\n    public displayPage: any;\r\n    public page: number;\r\n}\r\n"],"sourceRoot":"/source/"}

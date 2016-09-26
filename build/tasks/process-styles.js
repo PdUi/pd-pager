@@ -17,5 +17,5 @@ gulp.task('process-styles', ['lint-styles'], function() {
                .pipe($.sourcemaps.init())
                .pipe($.sass())
                .pipe($.sourcemaps.write('./maps'))
-               .pipe(gulp.dest(paths.output));
+               .pipe(gulp.dest(paths.cssOutput));
 });
