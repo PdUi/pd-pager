@@ -6,21 +6,21 @@
 
         <title>VanillaJS PdPager Examples</title>
 
-        <link rel="stylesheet" href="./node_modules/pd-pager/dist/css/pd-pager.css">
+        <link rel="stylesheet" href="./node_modules/pd-pager/dist/css/pager.css">
     </head>
     <body>
         <div id="pager1"></div>
-        <script src="./node_modules/pd-pager/dist/js/pd-pager.js"></script>
+        <script src="./node_modules/pd-pager/dist/js/pager.js"></script>
         <script>
             var element1 = document.getElementById('pager1');
-            var pdPager = new PdPager({
+            var pdPager = new Pager({
                 enableFirstLastPageArrows: true,
                 enablePageArrows: true,
                 enablePageInput: true,
                 totalNumberOfRecords: 100
             }, element1);
 
-            var pdPager2 = new PdPager({
+            var pdPager2 = new Pager({
                 enableFirstLastPageArrows: true,
                 enablePageArrows: true,
                 enablePageInput: true,

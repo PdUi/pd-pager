@@ -6,36 +6,27 @@
 
         <title>jQuery PdPager Examples</title>
 
-        <link rel="stylesheet" href="./jspm_packages/github/pdui/pd-pager@master/dist/css/pd-pager.css">
+        <link rel="stylesheet" href="./node_modules/pd-pager/dist/css/pager.css">
     </head>
     <body>
         <div id="pager1"></div>
-        <script src="./jspm_packages/system.js"></script>
-        <script src="./config.js"></script>
+        <script src="./node_modules/jquery/dist/jquery.min.js"></script>
+        <script src="./node_modules/pd-pager/dist/js/pager.js"></script>
         <script>
-            window.define = System.amdDefine;
-            window.require = window.requirejs = System.amdRequire;
+            var element1 = $('#pager1')[0];
+            var pdPager = new Pager({
+                enableFirstLastPageArrows: true,
+                enablePageArrows: true,
+                enablePageInput: true,
+                totalNumberOfRecords: 100
+            }, element1);
 
-            System.import('jquery/dist/jquery').then(jqueryModule => {
-                var $ = jqueryModule;
-                
-                System.import('pdui/pd-pager/dist/js/pd-pager').then((mod) => {
-                    var element1 = $('#pager1')[0];
-                    var pdPager = new mod.PdPager({
-                        enableFirstLastPageArrows: true,
-                        enablePageArrows: true,
-                        enablePageInput: true,
-                        totalNumberOfRecords: 100
-                    }, element1);
-
-                    var pdPager2 = new mod.PdPager({
-                        enableFirstLastPageArrows: true,
-                        enablePageArrows: true,
-                        enablePageInput: true,
-                        totalNumberOfRecords: 100
-                    });
-                });
-            })
+            var pdPager2 = new Pager({
+                enableFirstLastPageArrows: true,
+                enablePageArrows: true,
+                enablePageInput: true,
+                totalNumberOfRecords: 100
+            });
         </script>
     </body>
 </html>

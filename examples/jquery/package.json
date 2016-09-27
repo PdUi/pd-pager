@@ -17,14 +17,10 @@
     "url": "https://github.com/pdui/pd-pager/issues"
   },
   "devDependencies": {
-    "express": "^4.14.0",
-    "jspm": "^0.16.45"
+    "express": "^4.14.0"
   },
-  "jspm": {
-    "dependencies": {
-      "jquery": "npm:jquery@^3.1.1",
-      "pdui/pd-pager": "github:pdui/pd-pager@master"
-    },
-    "devDependencies": {}
+  "dependencies": {
+    "jquery": "^3.1.1",
+    "pd-pager": "git+https://github.com/PdUi/pd-pager.git"
   }
 }
