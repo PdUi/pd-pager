@@ -1,0 +1,30 @@
+{
+  "name": "pd-pager-examples",
+  "version": "0.0.1",
+  "description": "Examples of how to utilize pd-pager in an application.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pdui/pd-pager"
+  },
+  "keywords": [],
+  "author": {
+    "name": "PeinearyDevelopment",
+    "email": "peinearydevelopment@gmail.com",
+    "url": "http://www.peinearydevelopment.com"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/pdui/pd-pager/issues"
+  },
+  "devDependencies": {
+    "express": "^4.14.0",
+    "jspm": "^0.16.45"
+  },
+  "jspm": {
+    "dependencies": {
+      "jquery": "npm:jquery@^3.1.1",
+      "pdui/pd-pager": "github:pdui/pd-pager@master"
+    },
+    "devDependencies": {}
+  }
+}

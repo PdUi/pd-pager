@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <title>jQuery PdPager Examples</title>
+
+        <link rel="stylesheet" href="./jspm_packages/github/pdui/pd-pager@master/dist/css/pd-pager.css">
+    </head>
+    <body>
+        <div id="pager1"></div>
+        <script src="./jspm_packages/system.js"></script>
+        <script src="./config.js"></script>
+        <script>
+            window.define = System.amdDefine;
+            window.require = window.requirejs = System.amdRequire;
+
+            System.import('jquery/dist/jquery').then(jqueryModule => {
+                var $ = jqueryModule;
+                
+                System.import('pdui/pd-pager/dist/js/pd-pager').then((mod) => {
+                    var element1 = $('#pager1')[0];
+                    var pdPager = new mod.PdPager({
+                        enableFirstLastPageArrows: true,
+                        enablePageArrows: true,
+                        enablePageInput: true,
+                        totalNumberOfRecords: 100
+                    }, element1);
+
+                    var pdPager2 = new mod.PdPager({
+                        enableFirstLastPageArrows: true,
+                        enablePageArrows: true,
+                        enablePageInput: true,
+                        totalNumberOfRecords: 100
+                    });
+                });
+            })
+        </script>
+    </body>
+</html>

@@ -11,7 +11,7 @@ gulp.task('lint-typescript', function() {
                .pipe($.tslint.report());
 });
 
-gulp.task('process-typescript', ['lint-typescript'], function() {
+gulp.task('transpile-typescript', ['lint-typescript'], function() {
     if(!typescriptCompiler) {
         typescriptCompiler = $.typescript.createProject('./tsconfig.json', { typescript: require('typescript') });
     }
@@ -27,3 +27,10 @@ gulp.task('process-typescript', ['lint-typescript'], function() {
                       .pipe($.sourcemaps.write('./maps'))
                       .pipe(gulp.dest(paths.jsOutput));
 });
+
+gulp.task('copy-typings', function() {
+    gulp.src(paths.typingsInternal)
+        .pipe(gulp.dest(paths.typingsOutput));
+});
+
+gulp.task('process-typescript', ['transpile-typescript', 'copy-typings']);

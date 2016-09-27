@@ -9,5 +9,7 @@ module.exports = {
     styles: appRoot + '**/*.s+(a|c)ss',
     cssOutput: outputRoot + 'css/',
     typescript: appRoot + '**/*.ts',
-    typings: 'typings/**/*.d.ts'
+    typings: 'typings/**/*.d.ts',
+    typingsInternal: appRoot + '**/*.d.ts',
+    typingsOutput: outputRoot + 'typings/'
 }

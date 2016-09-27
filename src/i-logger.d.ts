@@ -1,4 +1,4 @@
-export interface ILogger {
+interface ILogger {
     debug(message?: string, ...optionalParams: any[]): void;
     error(message?: any, ...optionalParams: any[]): void;
     exception(message?: string, ...optionalParams: any[]): void;
