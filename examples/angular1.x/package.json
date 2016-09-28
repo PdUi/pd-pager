@@ -1,7 +1,7 @@
 {
   "name": "pd-pager-examples",
   "version": "0.0.1",
-  "description": "Examples of how to utilize pd-pager in an application utlizing jQuery.",
+  "description": "Examples of how to utilize pd-pager in an application utilizing angular 1.x.",
   "repository": {
     "type": "git",
     "url": "https://github.com/pdui/pd-pager"
@@ -20,7 +20,6 @@
     "express": "^4.14.0"
   },
   "dependencies": {
-    "jquery": "^3.1.1",
-    "pd-pager": "git+https://github.com/PdUi/pd-pager.git"
+    "pd-pager": "git+https://github.com/pdui/pd-pager.git"
   }
 }

@@ -1,70 +1,70 @@
 class Pager {
-    private canPageBackward: boolean;
-    private canPageForward: boolean;
-    private currentPage: number;
-    private firstPage: number;
-    private hasMorePagesBackward: boolean;
-    private hasMorePagesForward: boolean;
-    private id: string;
-    private input: HTMLInputElement;
-    private logger: ILogger;
-    private maximumNumberOfExplicitPagesToDisplay: number;
-    private pagesRange: IPagerExplicitPage[];
-    private totalNumberOfPages: number;
-    private totalPages: number;
+    public canPageBackward: boolean;
+    public canPageForward: boolean;
+    public currentPage: number;
+    public hasMorePagesBackward: boolean;
+    public hasMorePagesForward: boolean;
+    public id: string;
+    public input: HTMLInputElement;
+    public logger: ILogger;
+    public maximumNumberOfExplicitPagesToDisplay: number;
+    public pagesRange: IPagerExplicitPage[];
+    public totalNumberOfPages: number;
+
+    private noopLogger: ILogger = { debug: this.noop, error: this.noop, exception: this.noop, info: this.noop, log: this.noop, trace: this.noop, warn: this.noop };
+    private parentElement: HTMLElement;
+    private options: IPagerOptions;
 
     public constructor(options?: IPagerOptions, parentElement?: HTMLElement, logger?: ILogger) {
-       this.logger = this.logger || console;
+       this.logger = logger || this.noopLogger;
        this.logger.debug('constructor');
 
-       options = this.createOptions(options);
+       this.options = this.createOptions(options);
 
-       this.buildSettings(options);
+       this.currentPage = options.firstPage;
+       this.updatePagerState(this.options);
 
-       parentElement = parentElement || document.body;
+       this.parentElement = parentElement || document.body;
 
-       let pagerHtml = this.buildPager(options);
-       parentElement.appendChild(pagerHtml);
-    }
-
-    private pageToEnd(): void {
-        this.logger.debug('pageToEnd');
-        this.pageTo(this.totalPages);
-    }
-
-    private pageToBeginning(): void {
-        this.logger.debug('pageToBeginning');
-        this.pageTo(this.firstPage);
-    }
-
-    private retreat(): void {
-        this.logger.debug('retreat');
-        if (this.canPageBackward) {
-            this.pageTo(this.currentPage - 1);
-        }
-    }
-
-    private advance(): void {
-        this.logger.debug('advance');
-        if (this.canPageForward) {
-            this.pageTo(this.currentPage + 1);
-        }
+       let pager = this.buildPager(this.options);
+       this.parentElement.appendChild(pager);
     }
 
     private pageTo(pageIndex: number): void {
         this.logger.debug('pageTo(' + pageIndex + ')');
-        if (pageIndex > 0 && pageIndex <= this.totalPages) {
+
+        if (pageIndex > 0 && pageIndex <= this.totalNumberOfPages) {
             this.displayPageInput = this.convertFromDecimal(pageIndex);
-    //            this.updateState();
+            this.currentPage = this.displayPageInput;
+            this.updatePager();
+        }
+    }
+
+    private updatePager() {
+        this.updatePagerState(this.options);
+        let pager = this.buildPager(this.options);
+
+        let currentPagerElement = document.getElementById(`pager-container-${this.id}`);
+        if (currentPagerElement) {
+            currentPagerElement.parentElement.replaceChild(pager, currentPagerElement);
+        } else {
+            this.parentElement.appendChild(pager);
         }
     }
 
     private updateCurrentPage(): void {
         this.logger.debug('updateCurrentPage');
         let isValidPageInput = this.pageInputIsValid();
+        let currentPagerElement = document.getElementById(`page-input-${this.id}`);
 
         if (isValidPageInput) {
             this.pageTo(this.convertToDecimal.call(this, this.displayPageInput));
+
+            if (currentPagerElement.classList.contains('invalid')) {
+                currentPagerElement.classList.remove('invalid');
+            }
+        } else if (!currentPagerElement.classList.contains('invalid')) {
+            currentPagerElement.classList.add('invalid');
         }
     }
 
@@ -72,7 +72,7 @@ class Pager {
         this.logger.debug('pageInputIsValid');
         let pageInput = this.convertToDecimal(this.displayPageInput);
 
-        return pageInput && !isNaN(pageInput) && pageInput >= 1 && pageInput <= this.totalPages;
+        return !!pageInput && !isNaN(pageInput) && pageInput >= 1 && pageInput <= this.totalNumberOfPages;
     }
 
     private get displayPageInput() {
@@ -100,8 +100,6 @@ class Pager {
         options.pageSize = options.pageSize || 10;
         options.id = options.id || Math.floor(Math.random() * 10000).toString();
 
-        this.totalNumberOfPages = options.pageSize && options.totalNumberOfRecords ? options.totalNumberOfRecords / options.pageSize : 0;
-
         return options;
     }
 
@@ -109,15 +107,15 @@ class Pager {
         this.logger.debug('createTemplates');
 
         templates = templates || <IPagerTemplates> {};
-        templates.pageToBeginningHtml = templates.pageToBeginningHtml || '|<';
-        templates.pageRetreatHtml = templates.pageRangeHtml || '<';
-        templates.pageToFirstHtml = templates.pageToFirstHtml || '${settings.firstPage}';
-        templates.pageFillerBeforeHtml = templates.pageFillerBeforeHtml || '...';
-        templates.pageRangeHtml = templates.pageRangeHtml || '${pageRange.displayPage}';
-        templates.pageFillerAfterHtml = templates.pageFillerAfterHtml || '...';
-        templates.pageToLastHtml = templates.pageToLastHtml || '${settings.totalPages}';
-        templates.pageAdvanceHtml = templates.pageAdvanceHtml || '>';
-        templates.pageToEndHtml = templates.pageToEndHtml || '>|';
+        templates.pageToBeginningHtml = templates.pageToBeginningHtml || PagerTemplateConstants.DEFAULT_PAGE_TO_BEGINNING_HTML;
+        templates.pageRetreatHtml = templates.pageRangeHtml || PagerTemplateConstants.DEFAULT_PAGE_RETREAT_HTML;
+        templates.pageToFirstHtml = templates.pageToFirstHtml || PagerTemplateConstants.DEFAULT_PAGE_TO_FIRST_HTML;
+        templates.pageFillerBeforeHtml = templates.pageFillerBeforeHtml || PagerTemplateConstants.DEFAULT_PAGE_FILLER_BEFORE_HTML;
+        templates.pageRangeHtml = templates.pageRangeHtml || PagerTemplateConstants.DEFAULT_PAGE_RANGE_HTML;
+        templates.pageFillerAfterHtml = templates.pageFillerAfterHtml || PagerTemplateConstants.DEFAULT_PAGE_FILLER_AFTER_HTML;
+        templates.pageToLastHtml = templates.pageToLastHtml || PagerTemplateConstants.DEFAULT_PAGE_TO_LAST_HTML;
+        templates.pageAdvanceHtml = templates.pageAdvanceHtml || PagerTemplateConstants.DEFAULT_PAGE_ADVANCE_HTML;
+        templates.pageToEndHtml = templates.pageToEndHtml || PagerTemplateConstants.DEFAULT_PAGE_TO_END_HTML;
 
         return templates;
     }
@@ -132,52 +130,54 @@ class Pager {
         return parseInt(alternativeNumeralRepresentation, 10);
     }
 
-    private buildSettings(options: IPagerOptions): void {
-        this.logger.debug('buildSettings');
-        let firstPage = options.convertFromDecimal(options.firstPage);
-        this.currentPage = firstPage;
+    /* JUSTIFICATION: default logger won't do anything */
+    /* tslint:disable-next-line:no-empty */
+    private noop(): void {
+    }
+
+    private updatePagerState(options: IPagerOptions): void {
+        this.logger.debug('updatePagerState');
+        this.totalNumberOfPages = options.pageSize && options.totalNumberOfRecords ? options.totalNumberOfRecords / options.pageSize : 0;
         this.id = options.id;
         this.convertFromDecimal = options.convertFromDecimal.bind(this);
         this.convertToDecimal = options.convertToDecimal.bind(this);
-        this.firstPage = options.convertFromDecimal(options.firstPage);
         this.maximumNumberOfExplicitPagesToDisplay = options.maximumNumberOfExplicitPagesToDisplay;
-        this.totalPages = options.convertFromDecimal(this.totalNumberOfPages);
 
-        this.canPageBackward = this.currentPage > this.firstPage;
-        this.canPageForward = this.currentPage < this.totalPages;
+        this.canPageBackward = this.currentPage > options.firstPage;
+        this.canPageForward = this.currentPage < this.totalNumberOfPages;
 
         this.hasMorePagesBackward = false;
         this.hasMorePagesForward = false;
 
-        if (this.currentPage > this.firstPage + 2
-            && this.totalPages > this.maximumNumberOfExplicitPagesToDisplay) {
+        if (this.currentPage > options.firstPage + 2
+            && this.totalNumberOfPages > this.maximumNumberOfExplicitPagesToDisplay) {
             this.hasMorePagesBackward = true;
         }
 
-        if (this.currentPage < this.totalPages - 2
-            && this.totalPages > this.maximumNumberOfExplicitPagesToDisplay) {
+        if (this.currentPage < this.totalNumberOfPages - 2
+            && this.totalNumberOfPages > this.maximumNumberOfExplicitPagesToDisplay) {
             this.hasMorePagesForward = true;
         }
 
         let rangeStart;
         let rangeEnd;
         if (!this.hasMorePagesBackward && !this.hasMorePagesForward) {
-            rangeStart = this.firstPage + 1;
-            rangeEnd = this.totalPages;
+            rangeStart = options.firstPage + 1;
+            rangeEnd = this.totalNumberOfPages;
         } else if (!this.hasMorePagesBackward) {
-            rangeStart = this.firstPage + 1;
+            rangeStart = options.firstPage + 1;
             rangeEnd = this.maximumNumberOfExplicitPagesToDisplay - 1;
         } else if (!this.hasMorePagesForward) {
-            rangeEnd = this.totalPages;
-            rangeStart = this.totalPages - this.maximumNumberOfExplicitPagesToDisplay + 3;
+            rangeEnd = this.totalNumberOfPages;
+            rangeStart = this.totalNumberOfPages - this.maximumNumberOfExplicitPagesToDisplay + 3;
         } else {
             let hasOddNumberOfButtons = (this.maximumNumberOfExplicitPagesToDisplay % 2) === 1;
             let x = Math.ceil((this.maximumNumberOfExplicitPagesToDisplay - 5) / 2);
 
-            if (this.currentPage + x === this.totalPages - 2) {
+            if (this.currentPage + x === this.totalNumberOfPages - 2) {
                 this.hasMorePagesForward = false;
                 rangeStart = this.currentPage - x;
-                rangeEnd = this.totalPages;
+                rangeEnd = this.totalNumberOfPages;
             } else {
                 if (hasOddNumberOfButtons) {
                     rangeStart = this.currentPage - x;
@@ -200,23 +200,25 @@ class Pager {
         let beginningPagerButtons = [];
         let endingPagerButtons = [];
         let hasMultiplePages = this.totalNumberOfPages > options.firstPage;
+        let displayFirstPage = options.convertFromDecimal(options.firstPage);
+        let lastPage = options.convertFromDecimal(this.totalNumberOfPages);
 
         if (options.enableFirstLastPageArrows) {
-            beginningPagerButtons.push(this.buildButton(templates.pageToBeginningHtml, 'arrow-page-to-beginning', !this.canPageBackward, this.pageToBeginning.bind(this)));
-            endingPagerButtons.unshift(this.buildButton(templates.pageToEndHtml, 'arrow-page-to-end', !this.canPageForward, this.pageToEnd.bind(this)));
+            beginningPagerButtons.push(this.buildButton(templates.pageToBeginningHtml, 'arrow-page-to-beginning', !this.canPageBackward, this.pageTo.bind(this, options.firstPage)));
+            endingPagerButtons.unshift(this.buildButton(templates.pageToEndHtml, 'arrow-page-to-end', !this.canPageForward, this.pageTo.bind(this, this.totalNumberOfPages)));
         }
 
         if (options.enablePageArrows) {
-            beginningPagerButtons.push(this.buildButton(templates.pageRetreatHtml, 'arrow-page-retreat', !this.canPageBackward, this.retreat.bind(this)));
-            endingPagerButtons.unshift(this.buildButton(templates.pageAdvanceHtml, 'arrow-page-advance', !this.canPageForward, this.advance.bind(this)));
+            beginningPagerButtons.push(this.buildButton(templates.pageRetreatHtml, 'arrow-page-retreat', !this.canPageBackward, this.pageTo.bind(this, this.currentPage - 1)));
+            endingPagerButtons.unshift(this.buildButton(templates.pageAdvanceHtml, 'arrow-page-advance', !this.canPageForward, this.pageTo.bind(this, this.currentPage + 1)));
         }
 
         if (hasMultiplePages) {
-            let content = templates.pageToFirstHtml.replace('${settings.firstPage}', this.firstPage.toString());
-            beginningPagerButtons.push(this.buildButton(content, 'page-to-beginning', !this.canPageBackward, this.pageToBeginning.bind(this)));
+            let content = templates.pageToFirstHtml.replace(PagerTemplateConstants.PAGE_TO_FIRST_PLACEHOLDER, displayFirstPage.toString());
+            beginningPagerButtons.push(this.buildButton(content, 'page-to-beginning', !this.canPageBackward, this.pageTo.bind(this, options.firstPage)));
 
-            content = templates.pageToLastHtml.replace('${settings.totalPages}', this.totalPages.toString());
-            endingPagerButtons.unshift(this.buildButton(content, 'arrow-page-end', !this.canPageForward, this.pageToEnd.bind(this)));
+            content = templates.pageToLastHtml.replace(PagerTemplateConstants.PAGE_TO_LAST_PLACEHOLDER, lastPage.toString());
+            endingPagerButtons.unshift(this.buildButton(content, 'arrow-page-end', !this.canPageForward, this.pageTo.bind(this, this.totalNumberOfPages)));
         }
 
         if (this.hasMorePagesBackward) {
@@ -229,7 +231,7 @@ class Pager {
 
         this.pagesRange
                 .forEach(pageRange => {
-                    let content = templates.pageRangeHtml.replace('${pageRange.displayPage}', pageRange.displayPage);
+                    let content = templates.pageRangeHtml.replace(PagerTemplateConstants.PAGE_RANGE_PLACEHOLDER, pageRange.displayPage);
                     beginningPagerButtons.push(this.buildButton(content, `page-${pageRange.page}`, this.currentPage === pageRange.page, this.pageTo.bind(this, pageRange.page)));
                 });
 
@@ -237,13 +239,13 @@ class Pager {
             let input = document.createElement('input');
             input.id = `page-input-${this.id}`;
             input.value = this.currentPage.toString();
-            input.blur = this.updateCurrentPage;
+            input.addEventListener('blur', this.updateCurrentPage.bind(this), false);
             this.input = input;
             endingPagerButtons.push(input);
         }
 
         let element = document.createElement('div');
-        element.id = `pager-container${this.id}`;
+        element.id = `pager-container-${this.id}`;
 
         beginningPagerButtons
             .concat(endingPagerButtons)

@@ -5,3 +5,4 @@ typings/
 **/dist/**/maps/
 !dist/typings/
 *.log
+coverage/

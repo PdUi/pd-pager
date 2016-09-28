@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <title>VanillaJS PdPager Examples</title>
+
+        <link rel="stylesheet" href="./node_modules/pd-pager/dist/css/pager.css">
+    </head>
+    <body>
+        <div id="pager1"></div>
+        <script src="./node_modules/pd-pager/dist/js/pager.js"></script>
+        <script>
+            var element1 = document.getElementById('pager1');
+            var pdPager = new Pager({
+                enableFirstLastPageArrows: true,
+                enablePageArrows: true,
+                enablePageInput: true,
+                totalNumberOfRecords: 100
+            }, element1);
+
+            var pdPager2 = new Pager({
+                enableFirstLastPageArrows: true,
+                enablePageArrows: true,
+                enablePageInput: true,
+                totalNumberOfRecords: 100
+            });
+        </script>
+    </body>
+</html>

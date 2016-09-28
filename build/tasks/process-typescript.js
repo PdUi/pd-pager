@@ -17,8 +17,7 @@ gulp.task('transpile-typescript', ['lint-typescript'], function() {
     }
 
     let dts = gulp.src(paths.typings);
-    let src = gulp.src(paths.typescript)
-                  .pipe($.changedInPlace({firstPass: true}));
+    let src = gulp.src(paths.typescript);
 
     return eventStream.merge(dts, src)
                       .pipe($.plumber({ errorHandler: $.notify.onError('Error: <%= error.message %>') }))

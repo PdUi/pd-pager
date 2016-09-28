@@ -2,7 +2,7 @@ var PagerTemplateConstants = (function () {
     function PagerTemplateConstants() {
     }
     PagerTemplateConstants.PAGE_TO_FIRST_PLACEHOLDER = '${settings.firstPage}';
-    PagerTemplateConstants.PAGE_TO_LAST_PLACEHOLDER = '${settings.totalPages}';
+    PagerTemplateConstants.PAGE_TO_LAST_PLACEHOLDER = '${settings.lastPage}';
     PagerTemplateConstants.PAGE_RANGE_PLACEHOLDER = '${pageRange.displayPage}';
     PagerTemplateConstants.DEFAULT_PAGE_TO_BEGINNING_HTML = '|<';
     PagerTemplateConstants.DEFAULT_PAGE_TO_END_HTML = '>|';
