@@ -19,6 +19,7 @@
             System.import('./dist/js/pager').then((PdPager) => {
                 System.import('./dist/js/pager-templates-constants').then(() => {
                     var element1 = document.getElementById('pager1');
+
                     var pdPager = new PdPager({
                         enableFirstLastPageArrows: true,
                         enablePageArrows: true,
@@ -26,12 +27,25 @@
                         totalNumberOfRecords: 100
                     }, element1);
 
+                    var i = 0;
+                    element1.addEventListener('change', function () {
+                        i++;
+                        console.log(`element1: changed${i}`)
+                    })
+
                     var pdPager2 = new PdPager({
                         enableFirstLastPageArrows: true,
                         enablePageArrows: true,
                         enablePageInput: true,
                         totalNumberOfRecords: 100
                     });
+
+                    var i3 = 0;
+                    pdPager2.parentElement.addEventListener('change', function (event) {
+                        i3++;
+                        console.log(`pdPager2: changed${i3}`)
+                        console.log(event.detail);
+                    })
                 });
             });
         </script>

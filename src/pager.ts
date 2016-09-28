@@ -50,6 +50,8 @@ class Pager {
         } else {
             this.parentElement.appendChild(pager);
         }
+
+        this.parentElement.dispatchEvent(new CustomEvent('change', { detail: { id: this.id } }));
     }
 
     private updateCurrentPage(): void {

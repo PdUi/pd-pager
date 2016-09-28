@@ -1,9 +1,6 @@
 describe('the pager module given no options', () => {
     var pager;
 
-    function noop() {
-    }
-
     beforeEach(() => {
         pager = new Pager();
     });
