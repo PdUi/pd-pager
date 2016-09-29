@@ -10,22 +10,36 @@
     </head>
     <body>
         <div id="pager1"></div>
-        <script src="./node_modules/jquery/dist/jquery.min.js"></script>
-        <script src="./node_modules/pd-pager/dist/js/pager.js"></script>
+        <script src="./node_modules/requirejs/require.js"></script>
         <script>
-            var element1 = $('#pager1')[0];
-            var pdPager = new Pager({
-                enableFirstLastPageArrows: true,
-                enablePageArrows: true,
-                enablePageInput: true,
-                totalNumberOfRecords: 100
-            }, element1);
+            requirejs.config({
+                baseUrl: 'node_modules',
+                paths: {
+                    jquery: 'jquery/dist/jquery.min',
+                     pagertemplatesconstants: 'pd-pager/dist/js/pager-templates-constants',
+                     pager: 'pd-pager/dist/js/pager'
+                },
+                shim: {
+                    pager: {'exports': 'Pager'},
+                    pagertemplatesconstants: { 'exports': 'PagerTemplateConstants' }
+                }
+            });
 
-            var pdPager2 = new Pager({
-                enableFirstLastPageArrows: true,
-                enablePageArrows: true,
-                enablePageInput: true,
-                totalNumberOfRecords: 100
+            requirejs(['jquery', 'pager', 'pagertemplatesconstants'], function($, Pager, PagerTemplateConstants) {
+                let element1 = $('#pager1')[0];
+                let pdPager = new Pager({
+                    enableFirstLastPageArrows: true,
+                    enablePageArrows: true,
+                    enablePageInput: true,
+                    totalNumberOfRecords: 100
+                }, element1);
+
+                let pdPager2 = new Pager({
+                    enableFirstLastPageArrows: true,
+                    enablePageArrows: true,
+                    enablePageInput: true,
+                    totalNumberOfRecords: 100
+                });
             });
         </script>
     </body>

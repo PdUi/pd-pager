@@ -17,7 +17,8 @@
     "url": "https://github.com/pdui/pd-pager/issues"
   },
   "devDependencies": {
-    "express": "^4.14.0"
+    "express": "^4.14.0",
+    "requirejs": "^2.3.2"
   },
   "dependencies": {
     "jquery": "^3.1.1",
