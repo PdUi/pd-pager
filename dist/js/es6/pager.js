@@ -5,7 +5,7 @@ export class Pager {
         this.logger = logger || this.noopLogger;
         this.logger.debug('constructor');
         this.options = this.createOptions(options);
-        this.currentPage = options.firstPage;
+        this.currentPage = this.options.firstPage;
         this.updatePagerState(this.options);
         this.parentElement = parentElement || document.body;
         let pager = this.buildPager(this.options);
