@@ -10,14 +10,13 @@
     "noImplicitAny": false,
     "removeComments": true,
     "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
-    "moduleResolution": "node",
-    "lib": ["es2015", "dom"]
+    "experimentalDecorators": true
   },
   "exclude": [
     "node_modules",
     "jspm_packages",
-    "examples"
+    "examples",
+    "dist"
   ],
   "filesGlob": [
     "./src/**/*.ts",

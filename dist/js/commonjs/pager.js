@@ -1,3 +1,5 @@
+"use strict";
+var pager_templates_constants_1 = require('./pager-templates-constants');
 var Pager = (function () {
     function Pager(options, parentElement, logger) {
         this.noopLogger = { debug: this.noop, error: this.noop, exception: this.noop, info: this.noop, log: this.noop, trace: this.noop, warn: this.noop };
@@ -79,15 +81,15 @@ var Pager = (function () {
     Pager.prototype.createTemplates = function (templates) {
         this.logger.debug('createTemplates');
         templates = templates || {};
-        templates.pageToBeginningHtml = templates.pageToBeginningHtml || PagerTemplateConstants.DEFAULT_PAGE_TO_BEGINNING_HTML;
-        templates.pageRetreatHtml = templates.pageRangeHtml || PagerTemplateConstants.DEFAULT_PAGE_RETREAT_HTML;
-        templates.pageToFirstHtml = templates.pageToFirstHtml || PagerTemplateConstants.DEFAULT_PAGE_TO_FIRST_HTML;
-        templates.pageFillerBeforeHtml = templates.pageFillerBeforeHtml || PagerTemplateConstants.DEFAULT_PAGE_FILLER_BEFORE_HTML;
-        templates.pageRangeHtml = templates.pageRangeHtml || PagerTemplateConstants.DEFAULT_PAGE_RANGE_HTML;
-        templates.pageFillerAfterHtml = templates.pageFillerAfterHtml || PagerTemplateConstants.DEFAULT_PAGE_FILLER_AFTER_HTML;
-        templates.pageToLastHtml = templates.pageToLastHtml || PagerTemplateConstants.DEFAULT_PAGE_TO_LAST_HTML;
-        templates.pageAdvanceHtml = templates.pageAdvanceHtml || PagerTemplateConstants.DEFAULT_PAGE_ADVANCE_HTML;
-        templates.pageToEndHtml = templates.pageToEndHtml || PagerTemplateConstants.DEFAULT_PAGE_TO_END_HTML;
+        templates.pageToBeginningHtml = templates.pageToBeginningHtml || pager_templates_constants_1.PagerTemplateConstants.DEFAULT_PAGE_TO_BEGINNING_HTML;
+        templates.pageRetreatHtml = templates.pageRangeHtml || pager_templates_constants_1.PagerTemplateConstants.DEFAULT_PAGE_RETREAT_HTML;
+        templates.pageToFirstHtml = templates.pageToFirstHtml || pager_templates_constants_1.PagerTemplateConstants.DEFAULT_PAGE_TO_FIRST_HTML;
+        templates.pageFillerBeforeHtml = templates.pageFillerBeforeHtml || pager_templates_constants_1.PagerTemplateConstants.DEFAULT_PAGE_FILLER_BEFORE_HTML;
+        templates.pageRangeHtml = templates.pageRangeHtml || pager_templates_constants_1.PagerTemplateConstants.DEFAULT_PAGE_RANGE_HTML;
+        templates.pageFillerAfterHtml = templates.pageFillerAfterHtml || pager_templates_constants_1.PagerTemplateConstants.DEFAULT_PAGE_FILLER_AFTER_HTML;
+        templates.pageToLastHtml = templates.pageToLastHtml || pager_templates_constants_1.PagerTemplateConstants.DEFAULT_PAGE_TO_LAST_HTML;
+        templates.pageAdvanceHtml = templates.pageAdvanceHtml || pager_templates_constants_1.PagerTemplateConstants.DEFAULT_PAGE_ADVANCE_HTML;
+        templates.pageToEndHtml = templates.pageToEndHtml || pager_templates_constants_1.PagerTemplateConstants.DEFAULT_PAGE_TO_END_HTML;
         return templates;
     };
     Pager.prototype.convertFromDecimal = function (decimalNumeralRepresentation) {
@@ -174,9 +176,9 @@ var Pager = (function () {
             endingPagerButtons.unshift(this.buildButton(templates.pageAdvanceHtml, 'arrow-page-advance', !this.canPageForward, this.pageTo.bind(this, this.currentPage + 1)));
         }
         if (hasMultiplePages) {
-            var content = templates.pageToFirstHtml.replace(PagerTemplateConstants.PAGE_TO_FIRST_PLACEHOLDER, displayFirstPage.toString());
+            var content = templates.pageToFirstHtml.replace(pager_templates_constants_1.PagerTemplateConstants.PAGE_TO_FIRST_PLACEHOLDER, displayFirstPage.toString());
             beginningPagerButtons.push(this.buildButton(content, 'page-to-beginning', !this.canPageBackward, this.pageTo.bind(this, options.firstPage)));
-            content = templates.pageToLastHtml.replace(PagerTemplateConstants.PAGE_TO_LAST_PLACEHOLDER, lastPage.toString());
+            content = templates.pageToLastHtml.replace(pager_templates_constants_1.PagerTemplateConstants.PAGE_TO_LAST_PLACEHOLDER, lastPage.toString());
             endingPagerButtons.unshift(this.buildButton(content, 'arrow-page-end', !this.canPageForward, this.pageTo.bind(this, this.totalNumberOfPages)));
         }
         if (this.hasMorePagesBackward) {
@@ -187,7 +189,7 @@ var Pager = (function () {
         }
         this.pagesRange
             .forEach(function (pageRange) {
-            var content = templates.pageRangeHtml.replace(PagerTemplateConstants.PAGE_RANGE_PLACEHOLDER, pageRange.displayPage);
+            var content = templates.pageRangeHtml.replace(pager_templates_constants_1.PagerTemplateConstants.PAGE_RANGE_PLACEHOLDER, pageRange.displayPage);
             beginningPagerButtons.push(_this.buildButton(content, "page-" + pageRange.page, _this.currentPage === pageRange.page, _this.pageTo.bind(_this, pageRange.page)));
         });
         if (options.enablePageInput) {
@@ -223,22 +225,6 @@ var Pager = (function () {
     };
     return Pager;
 }());
-var PagerTemplateConstants = (function () {
-    function PagerTemplateConstants() {
-    }
-    PagerTemplateConstants.PAGE_TO_FIRST_PLACEHOLDER = '${settings.firstPage}';
-    PagerTemplateConstants.PAGE_TO_LAST_PLACEHOLDER = '${settings.lastPage}';
-    PagerTemplateConstants.PAGE_RANGE_PLACEHOLDER = '${pageRange.displayPage}';
-    PagerTemplateConstants.DEFAULT_PAGE_TO_BEGINNING_HTML = '|<';
-    PagerTemplateConstants.DEFAULT_PAGE_TO_END_HTML = '>|';
-    PagerTemplateConstants.DEFAULT_PAGE_RETREAT_HTML = '<';
-    PagerTemplateConstants.DEFAULT_PAGE_ADVANCE_HTML = '>';
-    PagerTemplateConstants.DEFAULT_PAGE_TO_FIRST_HTML = PagerTemplateConstants.PAGE_TO_FIRST_PLACEHOLDER;
-    PagerTemplateConstants.DEFAULT_PAGE_TO_LAST_HTML = PagerTemplateConstants.PAGE_TO_LAST_PLACEHOLDER;
-    PagerTemplateConstants.DEFAULT_PAGE_FILLER_BEFORE_HTML = '...';
-    PagerTemplateConstants.DEFAULT_PAGE_FILLER_AFTER_HTML = '...';
-    PagerTemplateConstants.DEFAULT_PAGE_RANGE_HTML = PagerTemplateConstants.PAGE_RANGE_PLACEHOLDER;
-    return PagerTemplateConstants;
-}());
+exports.Pager = Pager;
 
 //# sourceMappingURL=maps/pager.js.map

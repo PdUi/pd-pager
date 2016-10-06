@@ -1,5 +1,6 @@
-var Pager = (function () {
-    function Pager(options, parentElement, logger) {
+import { PagerTemplateConstants } from './pager-templates-constants';
+export class Pager {
+    constructor(options, parentElement, logger) {
         this.noopLogger = { debug: this.noop, error: this.noop, exception: this.noop, info: this.noop, log: this.noop, trace: this.noop, warn: this.noop };
         this.logger = logger || this.noopLogger;
         this.logger.debug('constructor');
@@ -7,21 +8,21 @@ var Pager = (function () {
         this.currentPage = options.firstPage;
         this.updatePagerState(this.options);
         this.parentElement = parentElement || document.body;
-        var pager = this.buildPager(this.options);
+        let pager = this.buildPager(this.options);
         this.parentElement.appendChild(pager);
     }
-    Pager.prototype.pageTo = function (pageIndex) {
+    pageTo(pageIndex) {
         this.logger.debug('pageTo(' + pageIndex + ')');
         if (pageIndex > 0 && pageIndex <= this.totalNumberOfPages) {
             this.displayPageInput = this.convertFromDecimal(pageIndex);
             this.currentPage = this.displayPageInput;
             this.updatePager();
         }
-    };
-    Pager.prototype.updatePager = function () {
+    }
+    updatePager() {
         this.updatePagerState(this.options);
-        var pager = this.buildPager(this.options);
-        var currentPagerElement = document.getElementById("pager-container-" + this.id);
+        let pager = this.buildPager(this.options);
+        let currentPagerElement = document.getElementById(`pager-container-${this.id}`);
         if (currentPagerElement) {
             currentPagerElement.parentElement.replaceChild(pager, currentPagerElement);
         }
@@ -29,11 +30,11 @@ var Pager = (function () {
             this.parentElement.appendChild(pager);
         }
         this.parentElement.dispatchEvent(new CustomEvent('change', { detail: { id: this.id } }));
-    };
-    Pager.prototype.updateCurrentPage = function () {
+    }
+    updateCurrentPage() {
         this.logger.debug('updateCurrentPage');
-        var isValidPageInput = this.pageInputIsValid();
-        var currentPagerElement = document.getElementById("page-input-" + this.id);
+        let isValidPageInput = this.pageInputIsValid();
+        let currentPagerElement = document.getElementById(`page-input-${this.id}`);
         if (isValidPageInput) {
             this.pageTo(this.convertToDecimal.call(this, this.displayPageInput));
             if (currentPagerElement.classList.contains('invalid')) {
@@ -43,25 +44,21 @@ var Pager = (function () {
         else if (!currentPagerElement.classList.contains('invalid')) {
             currentPagerElement.classList.add('invalid');
         }
-    };
-    Pager.prototype.pageInputIsValid = function () {
+    }
+    pageInputIsValid() {
         this.logger.debug('pageInputIsValid');
-        var pageInput = this.convertToDecimal(this.displayPageInput);
+        let pageInput = this.convertToDecimal(this.displayPageInput);
         return !!pageInput && !isNaN(pageInput) && pageInput >= 1 && pageInput <= this.totalNumberOfPages;
-    };
-    Object.defineProperty(Pager.prototype, "displayPageInput", {
-        get: function () {
-            return parseInt(this.input.value, 10);
-        },
-        set: function (value) {
-            if (this.input) {
-                this.input.value = value.toString();
-            }
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Pager.prototype.createOptions = function (options) {
+    }
+    get displayPageInput() {
+        return parseInt(this.input.value, 10);
+    }
+    set displayPageInput(value) {
+        if (this.input) {
+            this.input.value = value.toString();
+        }
+    }
+    createOptions(options) {
         this.logger.debug('createOptions');
         options = options || {};
         options.firstPage = options.firstPage || 1;
@@ -75,8 +72,8 @@ var Pager = (function () {
         options.pageSize = options.pageSize || 10;
         options.id = options.id || Math.floor(Math.random() * 10000).toString();
         return options;
-    };
-    Pager.prototype.createTemplates = function (templates) {
+    }
+    createTemplates(templates) {
         this.logger.debug('createTemplates');
         templates = templates || {};
         templates.pageToBeginningHtml = templates.pageToBeginningHtml || PagerTemplateConstants.DEFAULT_PAGE_TO_BEGINNING_HTML;
@@ -89,18 +86,18 @@ var Pager = (function () {
         templates.pageAdvanceHtml = templates.pageAdvanceHtml || PagerTemplateConstants.DEFAULT_PAGE_ADVANCE_HTML;
         templates.pageToEndHtml = templates.pageToEndHtml || PagerTemplateConstants.DEFAULT_PAGE_TO_END_HTML;
         return templates;
-    };
-    Pager.prototype.convertFromDecimal = function (decimalNumeralRepresentation) {
+    }
+    convertFromDecimal(decimalNumeralRepresentation) {
         this.logger.debug('convertFromDecimal(' + decimalNumeralRepresentation + ')');
         return decimalNumeralRepresentation;
-    };
-    Pager.prototype.convertToDecimal = function (alternativeNumeralRepresentation) {
+    }
+    convertToDecimal(alternativeNumeralRepresentation) {
         this.logger.debug('convertToDecimal(' + alternativeNumeralRepresentation + ')');
         return parseInt(alternativeNumeralRepresentation, 10);
-    };
-    Pager.prototype.noop = function () {
-    };
-    Pager.prototype.updatePagerState = function (options) {
+    }
+    noop() {
+    }
+    updatePagerState(options) {
         this.logger.debug('updatePagerState');
         this.totalNumberOfPages = options.pageSize && options.totalNumberOfRecords ? options.totalNumberOfRecords / options.pageSize : 0;
         this.id = options.id;
@@ -119,8 +116,8 @@ var Pager = (function () {
             && this.totalNumberOfPages > this.maximumNumberOfExplicitPagesToDisplay) {
             this.hasMorePagesForward = true;
         }
-        var rangeStart;
-        var rangeEnd;
+        let rangeStart;
+        let rangeEnd;
         if (!this.hasMorePagesBackward && !this.hasMorePagesForward) {
             rangeStart = options.firstPage + 1;
             rangeEnd = this.totalNumberOfPages;
@@ -134,8 +131,8 @@ var Pager = (function () {
             rangeStart = this.totalNumberOfPages - this.maximumNumberOfExplicitPagesToDisplay + 3;
         }
         else {
-            var hasOddNumberOfButtons = (this.maximumNumberOfExplicitPagesToDisplay % 2) === 1;
-            var x = Math.ceil((this.maximumNumberOfExplicitPagesToDisplay - 5) / 2);
+            let hasOddNumberOfButtons = (this.maximumNumberOfExplicitPagesToDisplay % 2) === 1;
+            let x = Math.ceil((this.maximumNumberOfExplicitPagesToDisplay - 5) / 2);
             if (this.currentPage + x === this.totalNumberOfPages - 2) {
                 this.hasMorePagesForward = false;
                 rangeStart = this.currentPage - x;
@@ -156,15 +153,14 @@ var Pager = (function () {
         for (; rangeStart < rangeEnd; rangeStart++) {
             this.pagesRange.push({ displayPage: options.convertFromDecimal(rangeStart), page: rangeStart });
         }
-    };
-    Pager.prototype.buildPager = function (options) {
-        var _this = this;
-        var templates = this.createTemplates(options.templates);
-        var beginningPagerButtons = [];
-        var endingPagerButtons = [];
-        var hasMultiplePages = this.totalNumberOfPages > options.firstPage;
-        var displayFirstPage = options.convertFromDecimal(options.firstPage);
-        var lastPage = options.convertFromDecimal(this.totalNumberOfPages);
+    }
+    buildPager(options) {
+        let templates = this.createTemplates(options.templates);
+        let beginningPagerButtons = [];
+        let endingPagerButtons = [];
+        let hasMultiplePages = this.totalNumberOfPages > options.firstPage;
+        let displayFirstPage = options.convertFromDecimal(options.firstPage);
+        let lastPage = options.convertFromDecimal(this.totalNumberOfPages);
         if (options.enableFirstLastPageArrows) {
             beginningPagerButtons.push(this.buildButton(templates.pageToBeginningHtml, 'arrow-page-to-beginning', !this.canPageBackward, this.pageTo.bind(this, options.firstPage)));
             endingPagerButtons.unshift(this.buildButton(templates.pageToEndHtml, 'arrow-page-to-end', !this.canPageForward, this.pageTo.bind(this, this.totalNumberOfPages)));
@@ -174,7 +170,7 @@ var Pager = (function () {
             endingPagerButtons.unshift(this.buildButton(templates.pageAdvanceHtml, 'arrow-page-advance', !this.canPageForward, this.pageTo.bind(this, this.currentPage + 1)));
         }
         if (hasMultiplePages) {
-            var content = templates.pageToFirstHtml.replace(PagerTemplateConstants.PAGE_TO_FIRST_PLACEHOLDER, displayFirstPage.toString());
+            let content = templates.pageToFirstHtml.replace(PagerTemplateConstants.PAGE_TO_FIRST_PLACEHOLDER, displayFirstPage.toString());
             beginningPagerButtons.push(this.buildButton(content, 'page-to-beginning', !this.canPageBackward, this.pageTo.bind(this, options.firstPage)));
             content = templates.pageToLastHtml.replace(PagerTemplateConstants.PAGE_TO_LAST_PLACEHOLDER, lastPage.toString());
             endingPagerButtons.unshift(this.buildButton(content, 'arrow-page-end', !this.canPageForward, this.pageTo.bind(this, this.totalNumberOfPages)));
@@ -186,31 +182,29 @@ var Pager = (function () {
             endingPagerButtons.unshift(this.buildButton(templates.pageFillerAfterHtml, 'page-filler-after'));
         }
         this.pagesRange
-            .forEach(function (pageRange) {
-            var content = templates.pageRangeHtml.replace(PagerTemplateConstants.PAGE_RANGE_PLACEHOLDER, pageRange.displayPage);
-            beginningPagerButtons.push(_this.buildButton(content, "page-" + pageRange.page, _this.currentPage === pageRange.page, _this.pageTo.bind(_this, pageRange.page)));
+            .forEach(pageRange => {
+            let content = templates.pageRangeHtml.replace(PagerTemplateConstants.PAGE_RANGE_PLACEHOLDER, pageRange.displayPage);
+            beginningPagerButtons.push(this.buildButton(content, `page-${pageRange.page}`, this.currentPage === pageRange.page, this.pageTo.bind(this, pageRange.page)));
         });
         if (options.enablePageInput) {
-            var input = document.createElement('input');
-            input.id = "page-input-" + this.id;
+            let input = document.createElement('input');
+            input.id = `page-input-${this.id}`;
             input.value = this.currentPage.toString();
             input.addEventListener('blur', this.updateCurrentPage.bind(this), false);
             this.input = input;
             endingPagerButtons.push(input);
         }
-        var element = document.createElement('div');
-        element.id = "pager-container-" + this.id;
+        let element = document.createElement('div');
+        element.id = `pager-container-${this.id}`;
         beginningPagerButtons
             .concat(endingPagerButtons)
-            .forEach(function (button) {
+            .forEach(button => {
             element.appendChild(button);
         });
         return element;
-    };
-    Pager.prototype.buildButton = function (content, elementId, buttonIsDisabled, onclickAction) {
-        if (buttonIsDisabled === void 0) { buttonIsDisabled = true; }
-        if (onclickAction === void 0) { onclickAction = null; }
-        var button = document.createElement('button');
+    }
+    buildButton(content, elementId, buttonIsDisabled = true, onclickAction = null) {
+        let button = document.createElement('button');
         button.id = elementId;
         if (buttonIsDisabled) {
             button.disabled = true;
@@ -220,25 +214,7 @@ var Pager = (function () {
         }
         button.innerHTML = content;
         return button;
-    };
-    return Pager;
-}());
-var PagerTemplateConstants = (function () {
-    function PagerTemplateConstants() {
     }
-    PagerTemplateConstants.PAGE_TO_FIRST_PLACEHOLDER = '${settings.firstPage}';
-    PagerTemplateConstants.PAGE_TO_LAST_PLACEHOLDER = '${settings.lastPage}';
-    PagerTemplateConstants.PAGE_RANGE_PLACEHOLDER = '${pageRange.displayPage}';
-    PagerTemplateConstants.DEFAULT_PAGE_TO_BEGINNING_HTML = '|<';
-    PagerTemplateConstants.DEFAULT_PAGE_TO_END_HTML = '>|';
-    PagerTemplateConstants.DEFAULT_PAGE_RETREAT_HTML = '<';
-    PagerTemplateConstants.DEFAULT_PAGE_ADVANCE_HTML = '>';
-    PagerTemplateConstants.DEFAULT_PAGE_TO_FIRST_HTML = PagerTemplateConstants.PAGE_TO_FIRST_PLACEHOLDER;
-    PagerTemplateConstants.DEFAULT_PAGE_TO_LAST_HTML = PagerTemplateConstants.PAGE_TO_LAST_PLACEHOLDER;
-    PagerTemplateConstants.DEFAULT_PAGE_FILLER_BEFORE_HTML = '...';
-    PagerTemplateConstants.DEFAULT_PAGE_FILLER_AFTER_HTML = '...';
-    PagerTemplateConstants.DEFAULT_PAGE_RANGE_HTML = PagerTemplateConstants.PAGE_RANGE_PLACEHOLDER;
-    return PagerTemplateConstants;
-}());
+}
 
 //# sourceMappingURL=maps/pager.js.map

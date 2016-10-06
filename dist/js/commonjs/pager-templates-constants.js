@@ -1,3 +1,4 @@
+"use strict";
 var PagerTemplateConstants = (function () {
     function PagerTemplateConstants() {
     }
@@ -15,5 +16,6 @@ var PagerTemplateConstants = (function () {
     PagerTemplateConstants.DEFAULT_PAGE_RANGE_HTML = PagerTemplateConstants.PAGE_RANGE_PLACEHOLDER;
     return PagerTemplateConstants;
 }());
+exports.PagerTemplateConstants = PagerTemplateConstants;
 
 //# sourceMappingURL=maps/pager-templates-constants.js.map

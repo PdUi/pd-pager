@@ -11,9 +11,8 @@ gulp.task('build', function(done) {
     runSequence(
         'clean',
         [
-            'process-typescript',
-            'process-styles',
-            'process-markup'
+            'modules',
+            'process-styles'
         ],
         done
     )

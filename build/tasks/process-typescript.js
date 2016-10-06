@@ -3,6 +3,7 @@ var eventStream = require('event-stream');
 var gulp = require('gulp');
 var paths = require('../paths');
 var typescriptCompiler = typescriptCompiler || null;
+var tsconfig = require('../../tsconfig.json');
 
 gulp.task('lint-typescript', function() {
     return gulp.src(paths.typescript)
@@ -13,7 +14,7 @@ gulp.task('lint-typescript', function() {
 
 gulp.task('transpile-typescript', ['lint-typescript'], function() {
     if(!typescriptCompiler) {
-        typescriptCompiler = $.typescript.createProject('./tsconfig.json', { typescript: require('typescript') });
+        typescriptCompiler = $.typescript.createProject(tsconfig.compilerOptions, { typescript: require('typescript') });
     }
 
     let dts = gulp.src(paths.typings);
