@@ -16,29 +16,31 @@
                 baseUrl: 'node_modules',
                 paths: {
                     jquery: 'jquery/dist/jquery.min',
-                     pagertemplatesconstants: 'pd-pager/dist/js/pager-templates-constants',
-                     pager: 'pd-pager/dist/js/pager'
-                },
-                shim: {
-                    pager: {'exports': 'Pager'},
-                    pagertemplatesconstants: { 'exports': 'PagerTemplateConstants' }
+                    pager: 'pd-pager/dist/js/amd/pager.min',
+                    'pager-templates-constants': 'pd-pager/dist/js/amd/pager-templates-constants.min'
                 }
             });
 
-            requirejs(['jquery', 'pager', 'pagertemplatesconstants'], function($, Pager, PagerTemplateConstants) {
+            requirejs(['jquery', 'pager'], function($, Pager) {
                 let element1 = $('#pager1')[0];
-                let pdPager = new Pager({
+                let pdPager = new Pager.Pager({
                     enableFirstLastPageArrows: true,
                     enablePageArrows: true,
                     enablePageInput: true,
                     totalNumberOfRecords: 100
                 }, element1);
 
-                let pdPager2 = new Pager({
+                let pdPager2 = new Pager.Pager({
                     enableFirstLastPageArrows: true,
                     enablePageArrows: true,
                     enablePageInput: true,
                     totalNumberOfRecords: 100
+                });
+
+                var i = 0;
+                $(element1).on('page', function () {
+                    i++;
+                    console.log(`element1: changed${i}`)
                 });
             });
         </script>

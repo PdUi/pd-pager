@@ -27,10 +27,10 @@
                 }, element1);
 
                 var i = 0;
-                element1.addEventListener('change', function () {
+                element1.addEventListener('page', function () {
                     i++;
                     console.log(`element1: changed${i}`)
-                })
+                });
 
                 var pdPager2 = new PdPager.Pager({
                     enableFirstLastPageArrows: true,
@@ -40,11 +40,11 @@
                 });
 
                 var i3 = 0;
-                pdPager2.parentElement.addEventListener('change', function (event) {
+                pdPager2.parentElement.addEventListener('page', function (event) {
                     i3++;
                     console.log(`pdPager2: changed${i3}`)
                     console.log(event.detail);
-                })
+                });
             });
         </script>
     </body>
