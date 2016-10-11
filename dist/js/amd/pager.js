@@ -30,7 +30,7 @@ define(["require", "exports", './pager-templates-constants'], function (require,
             else {
                 this.parentElement.appendChild(pager);
             }
-            this.parentElement.dispatchEvent(new CustomEvent('page', { detail: { id: this.id } }));
+            this.parentElement.dispatchEvent(new CustomEvent('page', { detail: { id: this.id, pageToPage: this.currentPage } }));
         };
         Pager.prototype.updateCurrentPage = function () {
             this.logger.debug('updateCurrentPage');

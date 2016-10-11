@@ -29,7 +29,7 @@ export class Pager {
         else {
             this.parentElement.appendChild(pager);
         }
-        this.parentElement.dispatchEvent(new CustomEvent('page', { detail: { id: this.id } }));
+        this.parentElement.dispatchEvent(new CustomEvent('page', { detail: { id: this.id, pageToPage: this.currentPage } }));
     }
     updateCurrentPage() {
         this.logger.debug('updateCurrentPage');
